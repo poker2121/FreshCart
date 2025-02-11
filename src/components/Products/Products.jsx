@@ -1,21 +1,19 @@
-import { useState, useEffect } from "react";
-import axios from "axios";
-import {  useNavigate } from "react-router-dom";
-import Loading from "../Loading/Loading.jsx";
+import  { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-export default function Products() {
+const Products = () => {
   const [products, setProducts] = useState([]);
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [activeCategory, setActiveCategory] = useState('all');
+  
   const navigate = useNavigate();
 
   async function getProducts() {
     try {
-      const { data } = await axios.get(
-        "https://ecommerce.routemisr.com/api/v1/products"
-      );
+      const { data } = await axios.get("https://ecommerce.routemisr.com/api/v1/products");
       setProducts(data.data);
       setFilteredProducts(data.data);
       setLoading(false);
@@ -35,56 +33,87 @@ export default function Products() {
     setFilteredProducts(filtered);
   }, [searchTerm, products]);
 
-  return (
-    <div className="container mx-auto p-4">
-      <h2 className="text-4xl font-bold my-6 text-center">Our Products</h2>
-
-      {/* Search Bar */}
-      <div className="flex justify-center mb-6">
-        <input
-          type="text"
-          placeholder="Search for products..."
-          className="w-full sm:w-96 p-3 border rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
+  if (loading) {
+    return (
+      <div className="flex h-screen items-center justify-center">
+        <div className="h-16 w-16 animate-spin rounded-full border-4 border-dashed border-primary"></div>
       </div>
+    );
+  }
 
-      {loading ? (
-        <div className="flex justify-center items-center h-screen">
-          <Loading />
+  return (
+    <div className="min-h-screen   p-6">
+      <div className="mx-auto max-w-7xl">
+        {/* Header Section */}
+        <div className="mb-12 text-center">
+          <h1 className="mb-4 text-4xl font-bold tracking-tight text-[--main-color] md:text-5xl">
+            Our Collection
+          </h1>
+          <div className="relative mx-auto max-w-xl">
+            <input
+              type="text"
+              placeholder="Search products..."
+              className="w-full rounded-full bg-white px-6 py-4 text-lg shadow-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+            <div className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400">
+              🔍
+            </div>
+          </div>
         </div>
-      ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => {
-              const productId = product._id || product.id;
 
-              return (
-                <div
-                  key={productId}
-                  className="border rounded-lg overflow-hidden shadow-md hover:shadow-xl transition-shadow bg-white cursor-pointer"
-                  onClick={() => navigate(`/products/${productId}`)}
-                >
-                  <img
-                    src={product.imageCover}
-                    alt={product.title}
-                    className="w-full h-56 object-cover"
-                  />
-                  <div className="p-4">
-                    <h3 className="text-lg font-semibold line-clamp-1">
-                      {product.title}
-                    </h3>
-                    <p className="text-gray-600 font-medium">{product.price} EGP</p>
-                  </div>
+        {/* Products Grid */}
+        <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {filteredProducts.map((product) => (
+            <div
+              key={product._id}
+              className="group relative cursor-pointer overflow-hidden rounded-2xl bg-white shadow-md transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              onClick={() => navigate(`/productdetails/${product._id}`)}
+            >
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src={product.imageCover}
+                  alt={product.title}
+                  className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
+                />
+              </div>
+              
+              <div className="p-6">
+                <h3 className="mb-2 text-xl font-semibold text-gray-900 line-clamp-1">
+                  {product.title}
+                </h3>
+                <div className="flex items-center justify-between">
+                  <span className="text-lg font-bold text-primary">
+                    {product.price} EGP
+                  </span>
+                  <span className="rounded-full bg-primary/10 px-4 py-1 text-sm font-medium text-primary">
+                    {product.category?.name || 'General'}
+                  </span>
                 </div>
-              );
-            })
-          ) : (
-            <p className="text-center text-gray-500 col-span-4">No products found.</p>
-          )}
+              </div>
+
+              <div className="absolute inset-0 bg-black/40 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+                <div className="flex h-full items-center justify-center">
+                  <span className="rounded-full bg-white px-6 py-2 text-sm font-medium text-gray-900">
+                    View Details
+                  </span>
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
-      )}
+
+        {filteredProducts.length === 0 && (
+          <div className="mt-12 text-center">
+            <h3 className="text-2xl font-medium text-gray-600">
+              No products found matching your search.
+            </h3>
+          </div>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default Products;

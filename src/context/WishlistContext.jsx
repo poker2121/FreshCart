@@ -38,7 +38,7 @@ export function WishlistProvider({ children }) {
         { headers: { token: userToken } }
       );
   
-      // إعادة تحميل قائمة الرغبات بالكامل بعد الإضافة
+      
       fetchWishlist();
   
     } catch (error) {

@@ -1,6 +1,6 @@
 import { useFormik } from "formik";
 import axios from "axios";
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { CartContext } from "../../context/CartContext";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-hot-toast";
@@ -11,51 +11,72 @@ export default function Cash() {
   const { clearCart } = useContext(CartContext);
   const navigate = useNavigate();
 
+
+  const savedOrderData = JSON.parse(localStorage.getItem("orderData")) || {
+    fullName: "",
+    city: "",
+    details: "",
+    phone: "",
+  };
+
   async function handleCashPayment(values) {
     try {
       setLoading(true);
       const token = localStorage.getItem("userToken");
+      const cartData = JSON.parse(localStorage.getItem("cartData")); 
+      const cartId = cartData ? cartData._id : null;
+  
       if (!token) {
         toast.error("You are not logged in.");
         return;
       }
-
-      
-      const { data } = await axios.post(
-        "https://ecommerce.routemisr.com/api/v1/orders", 
-        {
-          shippingAddress: {
-            details: values.details,
-            phone: values.phone,
-            city: values.city,
-          },
-        },
+  
+      if (!cartId) {
+        toast.error("Cart ID not found. Please add products to cart.");
+        return;
+      }
+  
+      console.log("Using cartId:", cartId);
+  
+     
+      const cartResponse = await axios.get(
+        `https://ecommerce.routemisr.com/api/v1/cart/${cartId}`,
         { headers: { token } }
       );
-
-      
+  
+      if (cartResponse.data.numOfCartItems === 0) {
+        toast.error("Your cart is empty. Add products first!");
+        return;
+      }
+  
+      const { data } = await axios.post(
+        `https://ecommerce.routemisr.com/api/v1/orders/${cartId}`,
+        { shippingAddress: values },
+        { headers: { token } }
+      );
+  
+      console.log("Order Response:", data);
       toast.success("Order placed successfully!", { duration: 1000 });
-
-      
+  
       clearCart();
-
-      
-      navigate("/"); 
+      localStorage.removeItem("cartData");
+  
+      setTimeout(() => {
+        navigate("/recent-products");
+      }, 1500);
     } catch (err) {
-      console.error(err.response?.data?.message);
+      console.error("Error Response:", err.response?.data);
       toast.error("Failed to place order. Try again!");
     } finally {
       setLoading(false);
     }
   }
+  
+  
+  
 
   const formik = useFormik({
-    initialValues: {
-      fullName: "",
-      city: "",
-      details: "",
-      phone: "",
-    },
+    initialValues: savedOrderData, 
     onSubmit: handleCashPayment,
   });
 
@@ -66,7 +87,6 @@ export default function Cash() {
           <FaMoneyBillWave className="text-green-500" /> Pay with Cash
         </h2>
         <form onSubmit={formik.handleSubmit}>
-
           <div className="mb-4">
             <label className="block text-gray-700 text-sm font-bold mb-2">City</label>
             <input

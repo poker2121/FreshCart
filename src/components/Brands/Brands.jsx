@@ -25,7 +25,7 @@ export default function Brands() {
 
   return (
     <>
-      <h2 className="text-4xl font-bold my-8 text-center">Brands</h2>
+      <h2 className="text-4xl font-bold tracking-tight text-[--main-color] md:text-5xl my-3">Brands</h2>
       {loading ? (
         <div className="flex justify-center items-center h-[80vh]">
           <Loading />

@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import Loading from "../Loading/Loading";
 import { CartContext } from "../../context/CartContext.jsx";
@@ -30,59 +30,77 @@ export default function RecentProducts() {
       {isLoading ? (
         <Loading />
       ) : (
-        <div className="container mx-auto p-4">
-          <div className="flex flex-wrap gap-5 justify-center">
-            {data &&
-              data.map((product) => (
-                <div key={product.id} className="w-1/5 relative transition-transform transform hover:scale-105"> 
-                  <div className="product p-4 rounded-md border shadow-lg bg-white flex flex-col items-center">
-                
-                    <button
-                      onClick={() => handleWishlistToggle(product)}
-                      className="absolute top-3 right-3 text-2xl transition p-2 wishlist-btn"
-                      style={{
-                        borderColor: isInWishlist(product.id) ? "red" : "gray",
-                        color: isInWishlist(product.id) ? "red" : "gray",
-                      }}
-                    >
-                      <i className="fa-solid fa-heart"></i>
-                    </button>
-  
-                    <Link to={`productdetails/${product.id}`} className="flex-grow w-full">
+        <div className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {data?.map((product) => (
+              <div key={product.id} className="group relative">
+                <div className="bg-white rounded-xl shadow-md overflow-hidden transition-all duration-300 hover:shadow-xl">
+                  {/* Wishlist Button */}
+                  <button
+                    onClick={() => handleWishlistToggle(product)}
+                    className="absolute top-3 right-3 z-10 p-2 rounded-full bg-white/80 backdrop-blur-sm transition-all duration-300 hover:bg-white"
+                  >
+                    <i className={`fa-${isInWishlist(product.id) ? 'solid' : 'regular'} fa-heart text-xl ${isInWishlist(product.id) ? 'text-red-500' : 'text-gray-600'}`}></i>
+                  </button>
+
+                  {/* Product Link */}
+                  <Link to={`productdetails/${product.id}`} className="block">
+                    {/* Image Container */}
+                    <div className="aspect-square overflow-hidden">
                       <img
                         src={product.imageCover}
-                        className="w-full rounded-lg"
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                         alt={product.title}
                       />
-                      <h3 className="text-blue-950 text-sm bg-green-200 rounded-md px-1  text-center mt-2">
+                    </div>
+
+                    {/* Product Info */}
+                    <div className="p-4">
+                      {/* Category */}
+                      <span className="inline-block px-3 py-1 text-xs font-medium bg-green-100 text-green-800 rounded-full mb-2">
                         {product.category.name}
-                      </h3>
-                      <h3 className="text-lg font-semibold  mt-1 line-clamp-1">
+                      </span>
+
+                      {/* Title */}
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2 line-clamp-1">
                         {product.title}
                       </h3>
-  
-                      <div className="flex justify-between text-sm mt-2 w-full ">
-                        <span className="text-green-800 ">{product.price} EGP</span>
-                        <span>
-                          <i className="fa fa-star text-yellow-500"></i> {product.ratingsAverage}
+
+                      {/* Price and Rating */}
+                      <div className="flex items-center justify-between mb-4">
+                        <span className="text-lg font-bold text-green-700">
+                          {product.price} EGP
                         </span>
+                        <div className="flex items-center gap-1">
+                          <i className="fa fa-star text-yellow-400"></i>
+                          <span className="text-sm text-gray-600">
+                            {product.ratingsAverage}
+                          </span>
+                        </div>
                       </div>
-                    </Link>
-  
-                    <button
-                      onClick={() => addProductToCart(product.id)}
-                      className="w-full mt-4 py-2 bg-[--main-color] text-white rounded-md hover:bg-blue-600 transition text-lg font-semibold"
-                    >
-                      Add to cart
-                    </button>
-                  </div>
+
+                      {/* Add to Cart Button */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          addProductToCart(product.id);
+                        }}
+                        className="w-full py-2.5 px-4 bg-[--main-color] text-white rounded-lg font-semibold 
+                                 transition-all duration-300 hover:bg-blue-600 
+                                 active:transform active:scale-95 
+                                 flex items-center justify-center gap-2"
+                      >
+                        <i className="fa-solid fa-cart-plus"></i>
+                        Add to Cart
+                      </button>
+                    </div>
+                  </Link>
                 </div>
-              ))}
+              </div>
+            ))}
           </div>
         </div>
       )}
     </>
   );
-  
-
 }
