@@ -104,7 +104,7 @@ export default function Navbar() {
 
               <button 
                 onClick={logOut} 
-                className="flex items-center gap-2  hover:text-red-600 transition-colors"
+                className="flex items-center gap-2 hover:text-red-600 transition-colors"
               >
                 <LogOut className="size-5" />
                 <span>Log Out</span>
@@ -114,13 +114,13 @@ export default function Navbar() {
             <>
               <NavLink 
                 to="/register" 
-                className="px-4 py-2 text-gray-700 hover:bg-gray-100 rounded-full transition-colors"
+                className="px-2 py-2 bg-gray-200 text-dark cursor-pointer  rounded-full transition-colors"
               >
                 Register
               </NavLink>
               <NavLink 
                 to="/login" 
-                className="px-4 py-2 bg-green-600 text-white hover:bg-green-700 rounded-full transition-colors"
+                className="px-4 py-2 bg-gray-200 text-white cursor-pointer rounded-full transition-colors"
               >
                 Login
               </NavLink>
@@ -178,17 +178,17 @@ export default function Navbar() {
             {userToken ? (
               <button 
                 onClick={logOut} 
-                className="flex items-center gap-2  p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                className="flex items-center gap-2 p-3 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
               >
                 <LogOut className="size-5" />
                 <span>Log Out</span>
               </button>
             ) : (
               <>
-                <NavLink to="/register" className="block w-full p-3 text-center text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+                <NavLink to="/register" className="block w-full p-3 text-center bg-gray-200 text-dark cursor-pointer rounded-lg transition-colors">
                   Register
                 </NavLink>
-                <NavLink to="/login" className="block w-full p-3 text-center bg-green-600 text-white hover:bg-green-700 rounded-lg transition-colors">
+                <NavLink to="/login" className="block w-full p-3 text-center bg-gray-200 text-white cursor-pointer rounded-lg transition-colors">
                   Login
                 </NavLink>
               </>

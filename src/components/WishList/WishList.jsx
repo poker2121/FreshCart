@@ -10,19 +10,20 @@ export default function WishList() {
 
   if (wishlist.length === 0) {
     return (
-      <div className="min-h-screen bg-gray-50 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-3xl mx-auto text-center">
-          <Heart className="mx-auto h-16 w-16 text-gray-400 mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">قائمة المفضلة فارغة</h2>
-          <p className="text-gray-600 mb-8">لم تقم بإضافة أي منتجات إلى قائمة المفضلة بعد</p>
-          <Link to="/products">
-            <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
-              <Package className="mr-2 h-5 w-5" />
-              تصفح المنتجات
-            </button>
-          </Link>
-        </div>
-      </div>
+      <div className="min-h-screen py-12 px-4 sm:px-6 lg:px-8">
+  <div className="max-w-3xl mx-auto text-center">
+    <Heart className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+    <h2 className="text-2xl font-bold text-gray-900 mb-4">Empty Favorites List</h2>
+    <p className="text-gray-600 mb-8">You havent added any products to your favorites list yet.</p>
+    <Link to="/products">
+      <button className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[--main-color] hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+        <Package className="mr-2 h-5 w-5" />
+        Browse Products
+      </button>
+    </Link>
+  </div>
+</div>
+
     );
   }
 
