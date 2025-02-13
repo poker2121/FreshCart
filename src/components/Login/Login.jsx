@@ -40,7 +40,7 @@ export default function Login() {
       .required("Password is required")
       .matches(
         /^(?=.*[a-zA-Z])(?=.*\d).{8,}$/,
-        "Password must be at least 8 characters and contain both letters and numbers"
+        "Password Invalid"
       ),
   });
 
