@@ -43,7 +43,7 @@ export default function Navbar() {
         {userToken && (
           <div className="hidden lg:flex gap-x-6">
             <NavLink 
-              to="/home" 
+              to="/" 
               className={({ isActive }) => 
                 `flex items-center gap-2 text-gray-700 hover:text-green-600 transition-colors ${isActive ? 'text-green-600' : ''}`
               }
@@ -148,7 +148,7 @@ export default function Navbar() {
             </button>
           </div>
           <div className="mt-6 space-y-4">
-            <NavLink to="/home" className="flex items-center gap-2 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
+            <NavLink to="/" className="flex items-center gap-2 p-3 text-gray-700 hover:bg-gray-100 rounded-lg transition-colors">
               <Home className="size-5" />
               <span>Home</span>
             </NavLink>

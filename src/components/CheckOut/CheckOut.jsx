@@ -101,7 +101,7 @@ export default function Checkout() {
             {/* Details Input */}
             <div>
               <label htmlFor="details" className="block text-gray-700">
-                Enter Your Details:
+                Enter Your Address:
               </label>
               <input
                 type="text"
