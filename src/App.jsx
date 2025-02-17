@@ -26,6 +26,7 @@ import SubCategories from './components/SubCategories/SubCategories';
 import ForgetPassword from './components/ForgetPassword/ForgetPassword';
 import VerifyResetCode from './components/VerifyResetCode/VerifyResetCode';
 import ResetPassword from './components/ResetPassword/ResetPassword';
+import { Helmet } from 'react-helmet';
 
 
 const routers = createBrowserRouter([
@@ -67,6 +68,11 @@ function App() {
        <UserContextProvider>
         <RouterProvider router={routers} />
         <ReactQueryDevtools/>
+        <Helmet>
+        <meta name="description" content="Product details page" />
+        <title>Fresh Cart</title>
+        </Helmet>
+
        <Toaster/>
        </UserContextProvider>
        </WishlistProvider>

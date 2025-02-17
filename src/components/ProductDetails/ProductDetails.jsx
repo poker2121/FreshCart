@@ -4,6 +4,7 @@ import { useContext, useEffect, useState } from "react";
 import Slider from "react-slick";
 import Loading from "../Loading/Loading.jsx";
 import { CartContext } from "../../context/CartContext.jsx";
+import { Helmet } from "react-helmet";
 
 export default function ProductDetails() {
   let { addProductToCart } = useContext(CartContext);
@@ -47,6 +48,11 @@ export default function ProductDetails() {
   return (
     <>
      <h2 className="text-4xl font-bold my-6">Details</h2>
+     <Helmet>
+   <meta name="description" content="Product details page" />
+  <title>{product ? product.title : "Loading..."}</title>
+</Helmet>
+   
 {loading ? (
   <Loading />
 ) : (
